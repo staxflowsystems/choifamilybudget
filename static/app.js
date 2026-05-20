@@ -621,6 +621,22 @@ function saveBudget(){
   },2000);
 }
 
+function loadBudget(){
+  var saved=localStorage.getItem('familyBudget');
+  if(!saved)return;
+  try{
+    var data=JSON.parse(saved);
+    if(el('dad-income'))el('dad-income').value=data.dadIncome||0;
+    if(el('other-income'))el('other-income').value=data.otherIncome||0;
+    if(el('exp-rent'))el('exp-rent').value=data.rent||0;
+    if(el('exp-elec'))el('exp-elec').value=data.utilities||0;
+    if(el('exp-ins'))el('exp-ins').value=data.insurance||0;
+    if(el('exp-phone'))el('exp-phone').value=data.phone||0;
+    if(el('exp-mom'))el('exp-mom').value=data.momAllowance||0;
+    if(el('exp-misc'))el('exp-misc').value=data.misc||0;
+  }catch(e){console.log('Could not load saved budget');}
+}
+
 // Wire events
 el('lang-btn').addEventListener('click',function(){lang=lang==='en'?'ko':'en';applyLang();recalc()});
 el('save-budget-btn').addEventListener('click',saveBudget);
@@ -638,5 +654,5 @@ document.querySelectorAll('.tab-btn').forEach(function(btn){
 addDebt('credit');addDebt('medical');addDebt('car');
 
 // Init
-renderInvestOptions();renderDebtForms();renderSnowball();recalc();applyLang();
+loadBudget();renderInvestOptions();renderDebtForms();renderSnowball();recalc();applyLang();
 })();
