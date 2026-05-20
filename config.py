@@ -3,10 +3,15 @@ import os
 class Config:
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-    # Render sets DATABASE_URL with "postgres://" prefix; SQLAlchemy requires "postgresql://"
+    # Read DATABASE_URL from environment (Render/Supabase sets this)
+    # Fall back to SQLite locally for development
     _db_url = os.environ.get('DATABASE_URL', f"sqlite:///{os.path.join(BASE_DIR, 'budget.db')}")
+
+    # Fix postgres:// → postgresql+psycopg:// if needed (Render uses postgres://)
     if _db_url.startswith('postgres://'):
-        _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+        _db_url = _db_url.replace('postgres://', 'postgresql+psycopg://', 1)
+    elif _db_url.startswith('postgresql://'):
+        _db_url = _db_url.replace('postgresql://', 'postgresql+psycopg://', 1)
 
     SQLALCHEMY_DATABASE_URI = _db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
