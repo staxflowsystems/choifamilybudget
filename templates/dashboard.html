@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Financial Plan | 가족 재정 계획</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="header">
+  <div class="eyebrow">Hawaii Family Finance</div>
+  <h1 id="main-title">Family Financial Plan</h1>
+  <p class="sub" id="main-sub">Your complete guide to financial freedom</p>
+  <button class="lang-btn" id="lang-btn">한국어로 보기</button>
+  <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+</div>
+
+<div class="container">
+<div class="tabs">
+  <button class="tab-btn active" data-tab="0">💰 Budget</button>
+  <button class="tab-btn" data-tab="1">💳 Debts</button>
+  <button class="tab-btn" data-tab="2">📊 Summary</button>
+  <button class="tab-btn" data-tab="3">❄️ Snowball</button>
+  <button class="tab-btn" data-tab="4">📋 Your Plan</button>
+  <button class="tab-btn" data-tab="5">🎉 Debt Free Plan</button>
+  <button class="tab-btn" data-tab="6">📈 Invest</button>
+</div>
+
+<!-- PANEL 0: Budget -->
+<div class="panel active" id="panel0">
+  <div class="tip-box">
+    <div class="tip-box-title" id="tip0-title">📋 Step 1: Enter Your Monthly Income & Expenses</div>
+    <div class="tip-box-body" id="tip0-body">Fill in all the fields below. Be honest and include everything. This gives us the full picture of your finances so we can build your plan.</div>
+  </div>
+  <div class="card">
+    <div class="section-label green">💰 <span id="lbl-income">Monthly Income</span></div>
+    <label class="field-label" id="lbl-dad">Dad's Monthly Income</label>
+    <input type="number" id="dad-income" value="4500">
+    <label class="field-label" id="lbl-other-income">Other Income (0 if none)</label>
+    <input type="number" id="other-income" value="0">
+  </div>
+  <div class="card">
+    <div class="section-label red">💸 <span id="lbl-expenses">Monthly Expenses</span></div>
+    <label class="field-label" id="lbl-rent">Rent / Mortgage</label>
+    <input type="number" id="exp-rent" value="1800">
+    <label class="field-label" id="lbl-elec">Utilities (Electric, Water, Gas)</label>
+    <input type="number" id="exp-elec" value="150">
+    <label class="field-label" id="lbl-insurance">Insurance (Health, Auto, Home)</label>
+    <input type="number" id="exp-ins" value="300">
+    <label class="field-label" id="lbl-phone">Phone / Internet</label>
+    <input type="number" id="exp-phone" value="100">
+    <label class="field-label" id="lbl-mom">Mom's Allowance</label>
+    <input type="number" id="exp-mom" value="0">
+    <label class="field-label" id="lbl-misc">Personal / Miscellaneous</label>
+    <input type="number" id="exp-misc" value="0">
+  </div>
+  <button class="calc-btn" id="save-budget-btn" style="background:linear-gradient(135deg,#10b981,#34d399);margin-bottom:14px">✓ Save Budget</button>
+  <div class="card" id="summary-card">
+    <div class="summary-row"><span id="lbl-tot-income">Total Income</span><span id="val-income" style="color:var(--green);font-weight:700">$0</span></div>
+    <div class="summary-row"><span id="lbl-tot-exp">Total Expenses</span><span id="val-expenses" style="color:var(--red);font-weight:700">$0</span></div>
+    <hr class="divider">
+    <div class="leftover-row">
+      <span class="leftover-lbl" id="lbl-leftover">Monthly Leftover</span>
+      <div><div class="leftover-amt" id="val-leftover">$0</div><div class="leftover-tag" id="val-tag">--</div></div>
+    </div>
+    <div class="status-msg" id="status-msg"></div>
+  </div>
+</div>
+
+<!-- PANEL 1: Debts -->
+<div class="panel" id="panel1">
+  <div class="tip-box">
+    <div class="tip-box-title" id="tip1-title">📋 Step 2: List All Your Debts</div>
+    <div class="tip-box-body" id="tip1-body">Add each debt one by one. Include the name, total amount owed, interest rate (on your statement), and minimum monthly payment. Don't skip any — even small ones matter.</div>
+  </div>
+  <div id="debts-container"></div>
+  <button class="add-btn" id="add-debt-btn">+ Add a Debt</button>
+  <div class="card" id="debt-summary-card">
+    <div class="summary-row"><span id="lbl-total-debt">Total Debt</span><span id="val-total-debt" style="color:var(--red);font-weight:700">$0</span></div>
+    <div class="summary-row"><span id="lbl-min-payments">Total Minimum Payments/mo</span><span id="val-min-payments" style="color:var(--gold);font-weight:700">$0</span></div>
+    <div class="summary-row"><span id="lbl-extra-available">Extra Available for Debt</span><span id="val-extra-avail" style="color:var(--green);font-weight:700">$0</span></div>
+  </div>
+</div>
+
+<!-- PANEL 2: Summary -->
+<div class="panel" id="panel2">
+  <div class="tip-box">
+    <div class="tip-box-title" id="lbl-summary-title">📊 Financial Summary</div>
+    <div class="tip-box-body" id="lbl-summary-desc">Complete breakdown: Where your money comes from, where it goes, and what's left for debt & investing.</div>
+  </div>
+  <div class="card">
+    <div class="section-label green" id="lbl-income-label">💰 Monthly Income</div>
+    <div class="summary-row"><span id="lbl-dad-income">Dad's Income</span><span id="summary-dad" style="color:var(--green);font-weight:700">$0</span></div>
+    <div class="summary-row"><span id="lbl-other-income-summary">Other Income</span><span id="summary-other" style="color:var(--green);font-weight:700">$0</span></div>
+    <hr class="divider">
+    <div class="summary-row"><span style="font-weight:700" id="lbl-total-income-summary">Total Income</span><span id="summary-total-income" style="color:var(--green);font-weight:700;font-size:16px">$0</span></div>
+  </div>
+  <div class="card">
+    <div class="section-label red" id="lbl-expense-label">💸 Expense Breakdown</div>
+    <div class="summary-row"><span id="lbl-rent-label">Rent</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" id="summary-rent-pct">(0%)</span><span id="summary-rent" style="color:var(--red);font-weight:700">$0</span></div></div>
+    <div class="summary-row"><span id="lbl-utilities-label">Utilities</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" id="summary-utilities-pct">(0%)</span><span id="summary-utilities" style="color:var(--red);font-weight:700">$0</span></div></div>
+    <div class="summary-row"><span id="lbl-insurance-label">Insurance</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" id="summary-insurance-pct">(0%)</span><span id="summary-insurance" style="color:var(--red);font-weight:700">$0</span></div></div>
+    <div class="summary-row"><span id="lbl-phone-label">Phone / Internet</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" id="summary-phone-pct">(0%)</span><span id="summary-phone" style="color:var(--red);font-weight:700">$0</span></div></div>
+    <div class="summary-row"><span id="lbl-mom-label">Mom's Allowance</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" id="summary-mom-pct">(0%)</span><span id="summary-mom" style="color:var(--red);font-weight:700">$0</span></div></div>
+    <div class="summary-row"><span id="lbl-misc-label">Personal / Miscellaneous</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" id="summary-car-pct">(0%)</span><span id="summary-car" style="color:var(--red);font-weight:700">$0</span></div></div>
+    <hr class="divider">
+    <div class="summary-row"><span style="font-weight:700" id="lbl-total-essentials-label">Total Essentials</span><div style="display:flex;gap:12px;align-items:center"><span class="summary-pct" style="font-weight:700" id="summary-essentials-pct">(0%)</span><span id="summary-total-essentials" style="color:var(--red);font-weight:700;font-size:16px">$0</span></div></div>
+  </div>
+  <div class="card">
+    <div class="section-label red">💳 <span id="lbl-debt-title">Debt</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px" id="lbl-debt-desc">All debts from your Debts tab listed below:</div>
+    <div id="summary-debt-list"></div>
+    <hr class="divider">
+    <div class="summary-row"><span style="font-weight:700" id="lbl-total-debt-payments">Total Monthly Debt Payments</span><span id="summary-total-debt-payments" style="color:var(--red);font-weight:700">$0</span></div>
+    <div class="summary-row"><span id="lbl-money-left">Money Left After All Expenses & Debt</span><span id="summary-money-left" style="color:var(--green);font-weight:700;font-size:16px">$0</span></div>
+  </div>
+</div>
+
+<!-- PANEL 3: Snowball Education -->
+<div class="panel" id="panel3">
+  <div class="tip-box">
+    <div class="tip-box-title" id="lbl-snowball-main-title">❄️ The Debt Snowball - How to Win</div>
+    <div class="tip-box-body" id="lbl-snowball-main-body">Dave Ramsey's proven method: Pay smallest debts first to build momentum. Become debt-free. Then invest and build wealth.</div>
+  </div>
+  <div class="card">
+    <div class="section-label green" id="lbl-snowball-works">💡 How It Works</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6" id="lbl-snowball-works-body">
+      <strong>1. List debts:</strong> Smallest balance to largest<br>
+      <strong>2. Pay minimums:</strong> On everything<br>
+      <strong>3. Attack smallest:</strong> Put all extra money here<br>
+      <strong>4. Snowball effect:</strong> When paid off, roll payment to next<br>
+      <strong>5. Repeat:</strong> Until all debt is gone
+    </p>
+  </div>
+  <div class="card">
+    <div class="section-label blue" id="lbl-snowball-why">🎯 Why Smallest First?</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.6" id="lbl-snowball-why-body">
+      <strong>"Personal finance is 80% behavior, 20% math."</strong> — Dave Ramsey<br><br>
+      Paying the smallest debt first gives you a quick <strong>WIN</strong>. You see progress fast. That feeling motivates you to keep going. It's psychological, not mathematical. Like a snowball rolling downhill — it starts small but grows bigger and faster with every debt you eliminate.
+    </p>
+  </div>
+  <div class="card">
+    <div class="section-label red" id="lbl-snowball-eliminate">🚫 Why You Must Eliminate Debt</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.6" id="lbl-snowball-eliminate-body">
+      <strong>Debt steals your future.</strong> Every dollar in interest payments is money that should go toward YOUR dreams — a home, retirement, security.<br><br>
+      You work hard. Your money should work for <strong>you</strong>, not the bank.
+    </p>
+  </div>
+  <div class="card">
+    <div class="section-label gold" id="lbl-snowball-wealth">✅ After Debt: The Path to Wealth</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.6" id="lbl-snowball-wealth-body">
+      Once debt-free, take that monthly payment and invest it. $675/month in VOO for 15 years = $250,000+. <strong>That's real wealth. That's financial freedom.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- PANEL 4: Your Plan -->
+<div class="panel" id="panel4">
+  <div class="tip-box">
+    <div class="tip-box-title" id="lbl-plan-title">📋 Your Realistic Financial Plan</div>
+    <div class="tip-box-body" id="lbl-plan-desc">Based on your income, expenses, and debts - here's your monthly breakdown and path to debt freedom.</div>
+  </div>
+  <div class="card">
+    <div class="section-label green" id="lbl-plan-income-label">💰 Monthly Income</div>
+    <div class="summary-row"><span id="lbl-plan-total-income">Total Income</span><span id="plan-income" style="color:var(--green);font-weight:700">$0</span></div>
+  </div>
+  <div class="card">
+    <div class="section-label red" id="lbl-plan-essentials-label">💸 Monthly Essentials</div>
+    <div class="summary-row"><span id="lbl-plan-essential-exp">Essential Expenses</span><span id="plan-essentials" style="color:var(--red);font-weight:700">$0</span></div>
+    <hr class="divider">
+    <div class="summary-row"><span style="font-weight:600" id="lbl-plan-available">Money Available</span><span id="plan-available" style="color:var(--green);font-weight:700">$0</span></div>
+    <div style="text-align:center;color:var(--muted);font-size:12px;margin:6px 0">↓ (minus required debt payments)</div>
+    <div class="summary-row"><span style="font-weight:600" id="lbl-plan-debt-payments">Min Monthly Debt Payments</span><span id="plan-debt-payments" style="color:var(--red);font-weight:700">$0</span></div>
+    <hr class="divider">
+    <div class="summary-row"><span style="font-weight:700;color:var(--green)" id="lbl-plan-leftover">Money Left for Extra Payoff</span><span id="plan-leftover" style="color:var(--green);font-weight:700;font-size:16px">$0</span></div>
+  </div>
+  <div class="card">
+    <div class="section-label gold" id="lbl-plan-debt-list-title">💳 Your Debts (Smallest to Largest)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px" id="lbl-plan-debt-list-desc">Pay minimum on all debts, then attack the smallest one with extra money. When paid off, roll that payment to the next.</div>
+    <div id="plan-debt-list"></div>
+    <div style="margin-top:14px;padding:12px;background:rgba(167,139,250,.08);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;font-size:12px;color:var(--muted)" id="plan-paid-reminder">
+      <strong style="color:var(--purple)">💡 Reminder:</strong> <span id="lbl-plan-paid-reminder">Mark each debt as "Paid Off" in the Debts tab when you finish paying it. This will update your payoff schedule.</span>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 5: Debt Free Plan -->
+<div class="panel" id="panel5">
+  <h2 id="debt-free-plan-title">🎉 Your Debt Free Plan</h2>
+  <div class="tip-box">
+    <div class="tip-box-title" id="tip3-title">📋 Dave Ramsey's Baby Steps After Debt</div>
+    <div class="tip-box-body" id="tip3-body">Once your debts are paid off, take the money you were throwing at debt and redirect it into savings and investing. Here's the order Dave Ramsey recommends.</div>
+  </div>
+
+  <div id="baby-steps-list">
+    <div class="savings-tile">
+      <div class="savings-icon">🚨</div>
+      <div class="savings-title" id="step1-title">Baby Step 1: $1,000 Emergency Fund</div>
+      <div class="savings-body" id="step1-body">Before attacking debt, save $1,000 in a separate savings account. This is your safety net for small surprises — flat tire, small medical bill. Don't touch it except for real emergencies.</div>
+      <div class="savings-highlight" id="step1-highlight">Goal: Save $1,000 first. No exceptions.</div>
+    </div>
+    <div class="savings-tile">
+      <div class="savings-icon">💳</div>
+      <div class="savings-title" id="step2-title">Baby Step 2: Pay Off All Debt (Snowball)</div>
+      <div class="savings-body" id="step2-body">Use the Snowball tab to pay off every debt from smallest to largest. Put every extra dollar toward debt while paying minimums on everything else.</div>
+      <div class="savings-highlight" id="step2-highlight">This is where you are now. Focus here!</div>
+    </div>
+    <div class="savings-tile">
+      <div class="savings-icon">🛡️</div>
+      <div class="savings-title" id="step3-title">Baby Step 3: Full Emergency Fund (3-6 Months)</div>
+      <div class="savings-body" id="step3-body">Once debt-free, build your emergency fund to cover 3-6 months of living expenses. If monthly expenses are $4,500, your goal is $13,500-$27,000 saved.</div>
+      <div class="savings-highlight" id="step3-highlight">This protects you if Dad loses income or has a health issue.</div>
+    </div>
+    <div class="savings-tile">
+      <div class="savings-icon">📈</div>
+      <div class="savings-title" id="step4-title">Baby Step 4: Invest 15% of Income</div>
+      <div class="savings-body" id="step4-body">Put 15% of your monthly income into retirement investments. With $4,500/month income, that's $675/month. Use VOO in a brokerage account, or a 401k/IRA if available.</div>
+      <div class="savings-highlight" id="step4-highlight">$675/month in VOO for 15 years could grow to $250,000+</div>
+    </div>
+    <div class="savings-tile">
+      <div class="savings-icon">🏠</div>
+      <div class="savings-title" id="step5-title">Baby Step 5+: Build Wealth</div>
+      <div class="savings-body" id="step5-body">Keep investing, pay off your home if you have one, and build wealth. At this stage you have no debt, an emergency fund, and growing investments. You are financially free.</div>
+      <div class="savings-highlight" id="step5-highlight">This is the goal. Freedom from financial stress.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label green" id="lbl-dfp-income-label">💰 Monthly Income</div>
+    <div class="summary-row"><span id="lbl-dfp-total-income">Total Income</span><span id="dfp-income" style="color:var(--green);font-weight:700">$0</span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label red" id="lbl-dfp-expenses-label">💸 Monthly Expenses</div>
+    <div class="summary-row"><span id="lbl-dfp-total-essentials">Total Essentials</span><span id="dfp-expenses" style="color:var(--red);font-weight:700">$0</span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label green" id="lbl-dfp-debt-status">✅ Debt Status</div>
+    <div style="font-size:14px;font-weight:700;color:var(--green);text-align:center;padding:12px 0" id="dfp-debt-status">NO DEBT 🎉</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label gold" id="lbl-dfp-allocation-title">💰 Monthly Allocation (After Essentials)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px" id="lbl-dfp-allocation-desc">Based on Dave Ramsey's Baby Steps, here's how to allocate your leftover money:</div>
+    <div class="summary-row"><span id="lbl-dfp-leftover">Total Available</span><span id="dfp-leftover" style="color:var(--green);font-weight:700;font-size:16px">$0</span></div>
+    <hr class="divider">
+    <div class="summary-row"><span id="lbl-dfp-invest-pct">15% → Investing (Step 4)</span><span id="dfp-invest-amount" style="color:var(--gold);font-weight:700">$0</span></div>
+    <div style="font-size:11px;color:var(--faint);margin-left:0;margin-bottom:10px" id="lbl-dfp-invest-note">VOO, retirement accounts, building long-term wealth</div>
+    <div class="summary-row"><span id="lbl-dfp-savings-pct">Remaining → Savings & Goals</span><span id="dfp-savings-amount" style="color:var(--blue);font-weight:700">$0</span></div>
+    <div style="font-size:11px;color:var(--faint);margin-left:0" id="lbl-dfp-savings-note">Emergency fund maintenance, college fund, home payoff, quality of life</div>
+  </div>
+</div>
+
+<!-- PANEL 6: Invest -->
+<div class="panel" id="panel6">
+  <h2 id="invest-title">Investing for the Future</h2>
+  <div class="tip-box">
+    <div class="tip-box-title" id="tip4-title">⏰ Why You Need to Start Now (Even at 50)</div>
+    <div class="tip-box-body" id="tip4-body">You may have 15-20 years before retirement. That's enough time for smart investing to make a real difference. Even $200/month invested consistently can grow to $80,000+ in 15 years. The key is starting — today is always better than tomorrow.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label gold">📊 <span id="lbl-voo-title">VOO — Vanguard S&P 500 ETF</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px" id="voo-desc">VOO tracks the 500 largest US companies (Apple, Microsoft, Google, Amazon...). When America's economy grows, VOO grows. It's the most recommended ETF by financial experts for everyday investors.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label blue">🧮 <span id="lbl-voo-calc">VOO Investment Calculator</span></div>
+    <label class="field-label" id="lbl-invest-monthly">Monthly Investment ($)</label>
+    <input type="number" id="invest-monthly" value="200">
+    <label class="field-label" id="lbl-invest-years">Years to Invest</label>
+    <input type="number" id="invest-years" value="15">
+    <button class="calc-btn" id="invest-calc-btn">Calculate</button>
+    <div id="invest-result" style="display:none;margin-top:12px">
+      <div class="result-box-row">
+        <div class="rbox"><div class="rbox-lbl" id="lbl-invested">You Invested</div><div class="rbox-val" id="val-invested" style="color:var(--muted)">--</div></div>
+        <div class="rbox"><div class="rbox-lbl" id="lbl-grown-to">Grown To (~10%)</div><div class="rbox-val" id="val-grown" style="color:var(--gold)">--</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--faint);text-align:center;margin-top:8px" id="invest-note">Based on historical ~10% annual average. Past performance does not guarantee future results.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label gold">🧮 <span id="lbl-savings-calc">Savings Calculator</span></div>
+    <label class="field-label" id="lbl-monthly-save">Monthly Amount to Save ($)</label>
+    <input type="number" id="save-amount" value="500">
+    <label class="field-label" id="lbl-save-years">Years</label>
+    <input type="number" id="save-years" value="15">
+    <button class="calc-btn" id="savings-calc-btn">Calculate</button>
+    <div id="savings-result" style="display:none;margin-top:12px">
+      <div class="result-box-row">
+        <div class="rbox"><div class="rbox-lbl" id="lbl-total-saved">Total Saved</div><div class="rbox-val" id="val-total-saved" style="color:var(--green)">--</div></div>
+        <div class="rbox"><div class="rbox-lbl" id="lbl-with-interest">With ~7% Returns</div><div class="rbox-val" id="val-with-interest" style="color:var(--gold)">--</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="invest-options-container"></div>
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
