@@ -64,6 +64,12 @@ en:{
   invested:"You Invested",grownTo:"Grown To (~10%)",
   investNote:"Based on historical ~10% annual average. Past performance does not guarantee future results.",
   months:"months",yrs:"yrs",remove:"✕",
+  markedPaid:"✓ Paid Off",markPaid:"✓ Mark Paid",
+  noDebtsAdded:"No debts added yet. Add debts in the Debts tab.",
+  noActiveDebts:"No active debts. Great job!",
+  allDebtsPaidOff:"🎉 All debts paid off! Go to the Debt Free Plan tab to start your next chapter.",
+  balance:"Balance",paidOffLabel:"✓ PAID OFF",minimumPayment:"Minimum Monthly Payment",
+  withoutExtra:"Without Extra",withExtra:"With Extra",
   savingsSteps:[
     {icon:"🚨",title:"Baby Step 1: $1,000 Emergency Fund",body:"Before attacking debt, save $1,000 in a separate savings account. This is your safety net for small surprises — flat tire, small medical bill. Don't touch it except for real emergencies.",highlight:"Goal: Save $1,000 first. No exceptions."},
     {icon:"💳",title:"Baby Step 2: Pay Off All Debt (Snowball)",body:"Use the Snowball tab to pay off every debt from smallest to largest. Put every extra dollar toward debt while paying minimums on everything else.",highlight:"This is where you are now. Focus here!"},
@@ -137,6 +143,12 @@ ko:{
   invested:"투자 원금",grownTo:"예상 수익 (~연 10%)",
   investNote:"역사적 연평균 약 10% 기준. 과거 실적이 미래 수익을 보장하지는 않습니다.",
   months:"개월",yrs:"년",remove:"✕",
+  markedPaid:"✓ 상환 완료",markPaid:"✓ 상환 표시",
+  noDebtsAdded:"아직 부채가 없습니다. 부채 탭에서 부채를 추가하세요.",
+  noActiveDebts:"활성 부채가 없습니다. 잘하셨습니다!",
+  allDebtsPaidOff:"🎉 모든 부채가 상환되었습니다! 부채 없는 계획 탭으로 이동하여 새로운 장을 시작하세요.",
+  balance:"남은 금액",paidOffLabel:"✓ 상환 완료",minimumPayment:"월 최소 납부액",
+  withoutExtra:"추가 없이",withExtra:"추가 포함",
   savingsSteps:[
     {icon:"🚨",title:"1단계: 비상금 $1,000 모으기",body:"부채를 갚기 전에 먼저 별도 통장에 $1,000을 모으세요. 이것은 작은 긴급 상황(타이어 펑크, 작은 병원비 등)에 대비한 안전망입니다. 진짜 긴급 상황이 아니면 절대 사용하지 마세요.",highlight:"목표: 먼저 $1,000 저축. 예외 없음."},
     {icon:"💳",title:"2단계: 모든 부채 상환 (스노우볼)",body:"스노우볼 탭을 활용해 가장 작은 것부터 모든 부채를 갚으세요. 나머지 부채에 최소 납부액을 내면서 여유 자금을 전부 가장 작은 부채에 집중하세요.",highlight:"지금 여기가 집중해야 할 단계입니다!"},
@@ -356,7 +368,7 @@ function renderSummaryDebts(){
   readDebts();
 
   if(debts.length===0){
-    container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">No debts added yet. Add debts in the Debts tab.</div>';
+    container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">'+tx.noDebtsAdded+'</div>';
     if(el('summary-total-debt-payments'))el('summary-total-debt-payments').textContent=fmt(0);
     if(el('summary-money-left')){
       var income=(parseFloat(el('dad-income').value)||0)+(parseFloat(el('other-income').value)||0);
@@ -373,7 +385,7 @@ function renderSummaryDebts(){
     totalDebtPayments+=d.min;
     var div=document.createElement('div');
     div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px';
-    div.innerHTML='<div><span style="color:var(--muted)">'+d.name+'</span><div style="font-size:11px;color:var(--faint);margin-top:2px">Balance: '+fmt(d.balance)+'</div></div><span style="color:var(--red);font-weight:700">'+fmt(d.min)+'/mo</span>';
+    div.innerHTML='<div><span style="color:var(--muted)">'+d.name+'</span><div style="font-size:11px;color:var(--faint);margin-top:2px">'+tx.balance+': '+fmt(d.balance)+'</div></div><span style="color:var(--red);font-weight:700">'+fmt(d.min)+'/mo</span>';
     container.appendChild(div);
   });
 
@@ -395,7 +407,7 @@ function renderPlanDebts(income){
   var extraForDebt=Math.max(0,extraAvailable-totalMin);
 
   if(debts.length===0){
-    container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">No debts added yet. Add debts in the Debts tab.</div>';
+    container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">'+t().noDebtsAdded+'</div>';
     return;
   }
 
@@ -411,7 +423,7 @@ function renderPlanDebts(income){
   if(paidOffDebts.length>0){
     var paidSection=document.createElement('div');
     paidSection.style.cssText='margin-bottom:16px;padding:10px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px';
-    paidSection.innerHTML='<div style="font-weight:700;color:var(--green);font-size:12px;margin-bottom:8px">✓ PAID OFF:</div>';
+    paidSection.innerHTML='<div style="font-weight:700;color:var(--green);font-size:12px;margin-bottom:8px">'+tx.paidOffLabel+':</div>';
     paidOffDebts.forEach(function(d){
       paidSection.innerHTML+='<div style="font-size:11px;color:var(--muted);margin:4px 0"><strike>'+d.name+'</strike> - '+fmt(d.balance)+'</div>';
     });
@@ -420,14 +432,15 @@ function renderPlanDebts(income){
 
   // Show unpaid debts
   if(sortedDebts.length===0&&paidOffDebts.length===0){
-    container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">No active debts. Great job!</div>';
+    container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">'+tx.noActiveDebts+'</div>';
   }else if(sortedDebts.length===0){
-    container.innerHTML='<div style="font-size:12px;color:var(--green);padding:10px;font-weight:700">🎉 All debts paid off! Go to the Debt Free Plan tab to start your next chapter.</div>';
+    container.innerHTML='<div style="font-size:12px;color:var(--green);padding:10px;font-weight:700">'+tx.allDebtsPaidOff+'</div>';
   }else{
     sortedDebts.forEach(function(d,idx){
       var div=document.createElement('div');
       div.style.cssText='background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;margin-bottom:10px';
-      div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-weight:700;font-size:13px">'+d.name+'</div><div style="font-size:11px;color:var(--muted)">Balance: '+fmt(d.balance)+'</div></div></div><hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span>Minimum Monthly Payment:</span><span style="color:var(--red);font-weight:700">'+fmt(d.min)+'</span></div>';
+      var tx=t();
+      div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-weight:700;font-size:13px">'+d.name+'</div><div style="font-size:11px;color:var(--muted)">'+tx.balance+': '+fmt(d.balance)+'</div></div></div><hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span>'+tx.minimumPayment+':</span><span style="color:var(--red);font-weight:700">'+fmt(d.min)+'</span></div>';
       container.appendChild(div);
     });
   }
@@ -471,11 +484,11 @@ function renderDebtForms(){
   debts.forEach(function(d){
     var div=document.createElement('div');div.className='debt-card';
     var paidStyle=d.paidOff?'style="opacity:0.5;text-decoration:line-through"':'';
-    div.innerHTML='<div class="debt-card-header"><span class="debt-name" '+paidStyle+'>'+tx.debtName+'</span><div><button class="debt-rm" style="background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.3);color:var(--green)" data-id="'+d.id+'" data-action="paid">'+(d.paidOff?'✓ Paid Off':'✓ Mark Paid')+'</button><button class="debt-rm" data-id="'+d.id+'">'+tx.remove+'</button></div></div>'+
+    div.innerHTML='<div class="debt-card-header"><span class="debt-name" '+paidStyle+'>'+tx.debtName+'</span><div><button class="debt-rm" style="background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.3);color:var(--green)" data-id="'+d.id+'" data-action="paid">'+(d.paidOff?tx.markedPaid:tx.markPaid)+'</button><button class="debt-rm" data-id="'+d.id+'">'+tx.remove+'</button></div></div>'+
     '<div style="margin-bottom:10px"><select id="dt-'+d.id+'"'+(d.paidOff?'disabled':'')+' ><option value="credit">'+tx.debtTypes[0]+'</option><option value="medical">'+tx.debtTypes[1]+'</option><option value="car">'+tx.debtTypes[2]+'</option><option value="personal">'+tx.debtTypes[3]+'</option><option value="other">'+tx.debtTypes[4]+'</option></select></div>'+
-    '<input type="text" id="dn-'+d.id+'" '+paidStyle+' placeholder="'+nameExamples+'" value="'+d.name+'" '+(d.paidOff?'disabled':'')+'>'+
-    '<div class="debt-row"><div><label class="field-label">'+tx.debtBalance+'</label><input type="number" id="db-'+d.id+'" value="'+(d.balance||'')+'" placeholder="0" '+(d.paidOff?'disabled':'')+' ></div>'+
-    '<div><label class="field-label">'+tx.debtMin+'</label><input type="number" id="dm-'+d.id+'" value="'+(d.min||'')+'" placeholder="0" '+(d.paidOff?'disabled':'')+' ></div></div>';
+    '<input type="text" id="dn-'+d.id+'" '+paidStyle+' placeholder="'+nameExamples+'" value="'+d.name+'" '+(d.paidOff?'disabled':'')+' style="background:var(--input-bg);color:var(--text);border:1px solid rgba(255,255,255,0.1);padding:10px;border-radius:6px;">'+
+    '<div class="debt-row"><div><label class="field-label">'+tx.debtBalance+'</label><input type="number" id="db-'+d.id+'" value="'+(d.balance||'')+'" placeholder="0" '+(d.paidOff?'disabled':'')+' style="background:var(--input-bg);color:var(--text);border:1px solid rgba(255,255,255,0.1);padding:10px;border-radius:6px;"></div>'+
+    '<div><label class="field-label">'+tx.debtMin+'</label><input type="number" id="dm-'+d.id+'" value="'+(d.min||'')+'" placeholder="0" '+(d.paidOff?'disabled':'')+' style="background:var(--input-bg);color:var(--text);border:1px solid rgba(255,255,255,0.1);padding:10px;border-radius:6px;"></div></div>';
     container.appendChild(div);
     div.querySelectorAll('.debt-rm').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -638,7 +651,7 @@ function renderAcceleratePayoff(){
   var withExtra=smallest.balance>0?Math.ceil(smallest.balance/(smallest.min+extra)):0;
   var saved=Math.max(0,minOnly-withExtra);
 
-  targetEl.innerHTML='<div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:12px"><div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px">🎯 '+smallest.name+'</div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">Balance:</span> <span style="color:var(--text);font-weight:700">'+fmt(smallest.balance)+'</span></div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">Minimum Payment:</span> <span style="color:var(--red);font-weight:700">'+fmt(smallest.min)+'/mo</span></div><hr class="divider"><div style="display:flex;gap:12px;justify-content:space-around;font-size:12px"><div style="text-align:center"><div style="color:var(--muted)">Without Extra</div><div style="color:var(--text);font-weight:700;font-size:14px">'+minOnly+' '+tx.months+'</div></div><div style="text-align:center"><div style="color:var(--green)">With $'+Math.round(extra)+'/mo Extra</div><div style="color:var(--green);font-weight:700;font-size:14px">'+withExtra+' '+tx.months+'</div></div></div><div style="text-align:center;margin-top:8px;font-size:11px;color:var(--green);font-weight:700">'+saved+' '+tx.monthsSaved+'</div></div>';
+  targetEl.innerHTML='<div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:12px"><div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px">🎯 '+smallest.name+'</div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">'+tx.balance+':</span> <span style="color:var(--text);font-weight:700">'+fmt(smallest.balance)+'</span></div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">'+tx.minimumPayment+':</span> <span style="color:var(--red);font-weight:700">'+fmt(smallest.min)+'/mo</span></div><hr class="divider"><div style="display:flex;gap:12px;justify-content:space-around;font-size:12px"><div style="text-align:center"><div style="color:var(--muted)">'+tx.withoutExtra+'</div><div style="color:var(--text);font-weight:700;font-size:14px">'+minOnly+' '+tx.months+'</div></div><div style="text-align:center"><div style="color:var(--green)">'+tx.withExtra+' $'+Math.round(extra)+'/mo</div><div style="color:var(--green);font-weight:700;font-size:14px">'+withExtra+' '+tx.months+'</div></div></div><div style="text-align:center;margin-top:8px;font-size:11px;color:var(--green);font-weight:700">'+saved+' '+tx.monthsSaved+'</div></div>';
 }
 
 var autoSaveTimeout=null;
