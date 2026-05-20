@@ -679,19 +679,27 @@ function autoSave(){
         paid_off:   d.paidOff
       };
     });
+    console.log('Auto-saving budget and debts...');
     fetch('/api/save',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({budget:budgetData,debts:debtsData})
     })
-    .then(function(r){return r.json()})
+    .then(function(r){
+      console.log('API response status:', r.status);
+      return r.json();
+    })
     .then(function(data){
+      console.log('API response data:', data);
       if(data.status==='ok'){
+        console.log('Save successful, recalculating...');
         recalc();
+      }else{
+        console.log('API error:', data);
       }
     })
     .catch(function(e){
-      console.log('Auto-save error:',e);
+      console.log('Auto-save network error:',e);
     });
   },1000);
 }
