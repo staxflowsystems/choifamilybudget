@@ -33,6 +33,7 @@ en:{
   planIncomeLabel:"Monthly Income",planTotalIncome:"Total Income",
   planEssentialsLabel:"Monthly Essentials",planEssentialExp:"Essential Expenses",planAvailable:"Money Available",planDebtPayments:"Min Monthly Debt Payments",planLeftover:"Money Left for Extra Payoff",
   accelerateTitle:"⚡ Accelerate Your Payoff",availableForExtra:"Money Available for Extra Payoff",extraPayment:"Extra Monthly Payment ($)",remainingAfter:"Remaining After Extra Payment",accelerateNote:"Enter how much extra you'll put toward debt each month. This amount will attack your smallest debt first, then roll to the next once paid off.",payoffIn:"Payoff in",monthsSaved:"months saved",noUnpaidDebts:"All debts paid off! Great job!",
+  miscNote:"💡 This is fun money for each person. Dave Ramsey recommends $25-50/month per person for personal spending (coffee, hobby, small treats). Adjust based on your family's needs.",
   planDebtListTitle:"Your Debts (Smallest to Largest)",planDebtListDesc:"Pay minimum on all debts, then attack the smallest one with extra money. When paid off, roll that payment to the next.",
   planPaidReminder:"Mark each debt as \"Paid Off\" in the Debts tab when you finish paying it. This will update your payoff schedule.",
   planVooLabel:"After Debt: Monthly VOO Investment",planAmountInvest:"Amount to Invest",planVooNote:"Once debts are paid, invest this monthly into VOO for your retirement.",
@@ -105,6 +106,7 @@ ko:{
   planIncomeLabel:"월 수입",planTotalIncome:"총 수입",
   planEssentialsLabel:"월 필수 지출",planEssentialExp:"필수 지출",planAvailable:"이용 가능한 돈",planDebtPayments:"월간 최소 부채 납부액",planLeftover:"추가 상환에 사용 가능한 돈",
   accelerateTitle:"⚡ 상환 가속화",availableForExtra:"추가 상환에 사용 가능한 돈",extraPayment:"추가 월 상환액 ($)",remainingAfter:"추가 상환 후 남은 금액",accelerateNote:"매달 부채에 추가로 낼 금액을 입력하세요. 이 금액은 가장 작은 부채부터 공략한 후, 상환되면 다음 부채로 넘어갑니다.",payoffIn:"상환 예정",monthsSaved:"개월 단축",noUnpaidDebts:"모든 부채가 상환되었습니다. 축하합니다!",
+  miscNote:"💡 이것은 각 사람을 위한 용돈입니다. 데이브 램지는 개인 지출(커피, 취미, 작은 사치)을 위해 한 달에 인당 $25-50을 권장합니다. 가족의 필요에 따라 조정하세요.",
   planDebtListTitle:"당신의 부채 (작은 것부터 큰 것순)",planDebtListDesc:"모든 부채에 최소 납부액을 내고, 가장 작은 부채에 여유 자금을 집중하세요. 갚으면 다음 부채로 롤오버하세요.",
   planPaidReminder:"부채 탭에서 각 부채를 \"상환 완료\"로 표시하면 상환 계획이 업데이트됩니다.",
   planVooLabel:"부채 상환 후: 월간 VOO 투자",planAmountInvest:"투자 금액",planVooNote:"부채를 모두 갚은 후, 이 금액을 매달 VOO에 투자하여 은퇴 준비를 하세요.",
@@ -256,6 +258,7 @@ function applyLang(){
   set('lbl-extra-payment',tx.extraPayment);
   set('lbl-remaining-after',tx.remainingAfter);
   set('lbl-accelerate-note',tx.accelerateNote);
+  set('lbl-misc-note',tx.miscNote);
   document.querySelectorAll('.extra-name').forEach(function(i){i.placeholder=tx.expName});
   document.querySelectorAll('.debt-rm').forEach(function(b){b.textContent=tx.remove});
   renderAcceleratePayoff();
