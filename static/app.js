@@ -701,5 +701,5 @@ document.querySelectorAll('.tab-btn').forEach(function(btn){
 addDebt('credit');addDebt('medical');addDebt('car');
 
 // Init
-loadBudget();renderInvestOptions();renderDebtForms();renderSnowball();recalc();applyLang();
+loadBudget();applyLang();recalc();
 })();
