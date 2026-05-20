@@ -10,6 +10,11 @@ en:{
   tabs:["💰 Budget","💳 Debts","📊 Summary","❄️ Snowball","📋 Your Plan","🎉 Debt Free Plan","📈 Invest"],
   tip0title:"📋 Step 1: Enter Your Monthly Income & Expenses",
   tip0body:"Fill in all the fields below. Be honest and include everything. This gives us the full picture of your finances so we can build your plan.",
+  instructionTitle:"🎯 How to Use This App",
+  instructionStep1:"1. Budget — Enter income & expenses (you are here)",
+  instructionStep2:"2. Debts — List all your debts",
+  instructionStep3:"3. Your Plan — See how much extra you have",
+  instructionStep4:"4. Debt Free Plan — Start investing",
   tip1title:"📋 Step 2: List All Your Debts",
   tip1body:"Add each debt one by one. Include the name, total amount owed, and minimum monthly payment. Don't skip any — even small ones matter.",
   tip2title:"❄️ Dave Ramsey's Debt Snowball Method",
@@ -89,6 +94,11 @@ ko:{
   tabs:["💰 예산","💳 부채","📊 요약","❄️ 스노우볼","📋 계획","🎉 부채 없는 계획","📈 투자"],
   tip0title:"📋 1단계: 월 수입과 지출 입력하기",
   tip0body:"아래의 모든 항목을 솔직하게 입력하세요. 하나도 빠뜨리지 마세요. 이 정보를 바탕으로 재정 계획을 세울 수 있습니다.",
+  instructionTitle:"🎯 이 앱을 사용하는 방법",
+  instructionStep1:"1. 예산 — 수입과 지출 입력하기 (지금 여기입니다)",
+  instructionStep2:"2. 부채 — 모든 부채 목록 작성하기",
+  instructionStep3:"3. 계획 — 얼마나 많은 여유가 있는지 확인하기",
+  instructionStep4:"4. 부채 없는 계획 — 부채가 없어지면 투자 시작하기",
   tip1title:"📋 2단계: 모든 부채 목록 작성하기",
   tip1body:"부채를 하나씩 추가하세요. 부채 이름, 총 금액, 최소 월 납부액을 입력하세요. 작은 것도 빠뜨리지 마세요.",
   tip2title:"❄️ 데이브 램지의 빚 스노우볼 방법",
@@ -179,6 +189,11 @@ function applyLang(){
   var tabs=document.querySelectorAll('.tab-btn');
   tabs.forEach(function(b,i){b.textContent=tx.tabs[i]});
   set('tip0-title',tx.tip0title);set('tip0-body',tx.tip0body);
+  set('lbl-instruction-title',tx.instructionTitle);
+  set('lbl-instruction-step1',tx.instructionStep1);
+  set('lbl-instruction-step2',tx.instructionStep2);
+  set('lbl-instruction-step3',tx.instructionStep3);
+  set('lbl-instruction-step4',tx.instructionStep4);
   set('tip1-title',tx.tip1title);set('tip1-body',tx.tip1body);
   set('tip2-title',tx.tip2title);set('tip2-body',tx.tip2body);
   set('lbl-snowball-main-title',tx.snowballMainTitle);set('lbl-snowball-main-body',tx.snowballMainBody);
