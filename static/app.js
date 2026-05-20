@@ -269,7 +269,13 @@ function applyLang(){
     if(el('step'+num+'-body'))el('step'+num+'-body').textContent = s.body;
     if(el('step'+num+'-highlight'))el('step'+num+'-highlight').textContent = s.highlight;
   });
-  renderInvestOptions();renderDebtForms();renderSnowball();
+  // Update Investment Options text
+  tx.investOptions.forEach(function(o, i){
+    var num = i + 1;
+    if(el('invest-opt-'+num+'-title'))el('invest-opt-'+num+'-title').textContent = o.title;
+    if(el('invest-opt-'+num+'-body'))el('invest-opt-'+num+'-body').textContent = o.body;
+  });
+  renderDebtForms();renderSnowball();
 }
 
 function recalc(){
@@ -545,16 +551,6 @@ function renderSavingsSteps(){
   });
 }
 
-function renderInvestOptions(){
-  var tx=t();var container=el('invest-options-container');container.innerHTML='';
-  tx.investOptions.forEach(function(o){
-    var div=document.createElement('div');
-    div.style.cssText='background:'+o.color+';border:1px solid '+o.border+';border-radius:14px;padding:16px;margin-bottom:12px';
-    div.innerHTML='<div style="font-size:24px;margin-bottom:8px">'+o.icon+'</div><div style="font-weight:700;font-size:14px;margin-bottom:6px">'+o.title+'</div><div style="font-size:12px;color:var(--muted);line-height:1.65">'+o.body+'</div>';
-    container.appendChild(div);
-  });
-}
-
 function updateDebtFreePlan(){
   var dad=parseFloat(el('dad-income').value)||0;
   var other=parseFloat(el('other-income').value)||0;
@@ -646,41 +642,107 @@ function renderAcceleratePayoff(){
 }
 
 function saveBudget(){
+  readDebts();
   var budgetData={
-    dadIncome:parseFloat(el('dad-income').value)||0,
-    otherIncome:parseFloat(el('other-income').value)||0,
-    rent:parseFloat(el('exp-rent').value)||0,
-    utilities:parseFloat(el('exp-elec').value)||0,
-    insurance:parseFloat(el('exp-ins').value)||0,
-    phone:parseFloat(el('exp-phone').value)||0,
-    momAllowance:parseFloat(el('exp-mom').value)||0,
-    misc:parseFloat(el('exp-misc').value)||0,
-    savedAt:new Date().toLocaleString()
+    dad_income:   parseFloat(el('dad-income').value)||0,
+    other_income: parseFloat(el('other-income').value)||0,
+    rent:         parseFloat(el('exp-rent').value)||0,
+    utilities:    parseFloat(el('exp-elec').value)||0,
+    insurance:    parseFloat(el('exp-ins').value)||0,
+    phone:        parseFloat(el('exp-phone').value)||0,
+    mom_allowance:parseFloat(el('exp-mom').value)||0,
+    misc:         parseFloat(el('exp-misc').value)||0
   };
-  localStorage.setItem('familyBudget',JSON.stringify(budgetData));
+  var debtsData=debts.map(function(d,i){
+    return {
+      sort_order: i,
+      type:       d.type,
+      name:       d.name,
+      balance:    d.balance,
+      min:        d.min,
+      paid_off:   d.paidOff
+    };
+  });
   var btn=el('save-budget-btn');
-  btn.textContent='✓ Budget Saved!';
-  btn.style.background='linear-gradient(135deg,#6ee7b7,#a7f3d0)';
-  setTimeout(function(){
-    btn.textContent='✓ Save Budget';
-    btn.style.background='linear-gradient(135deg,#10b981,#34d399)';
-  },2000);
+  btn.textContent='Saving...';
+  btn.disabled=true;
+  fetch('/api/save',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({budget:budgetData,debts:debtsData})
+  })
+  .then(function(r){return r.json()})
+  .then(function(data){
+    if(data.status==='ok'){
+      btn.textContent='✓ Saved!';
+      btn.style.background='linear-gradient(135deg,#6ee7b7,#a7f3d0)';
+    }else{
+      btn.textContent='✗ Error saving';
+      btn.style.background='linear-gradient(135deg,#f87171,#fca5a5)';
+    }
+    setTimeout(function(){
+      btn.textContent='✓ Save Budget';
+      btn.style.background='linear-gradient(135deg,#10b981,#34d399)';
+      btn.disabled=false;
+    },2000);
+  })
+  .catch(function(){
+    btn.textContent='✗ Network error';
+    btn.style.background='linear-gradient(135deg,#f87171,#fca5a5)';
+    setTimeout(function(){
+      btn.textContent='✓ Save Budget';
+      btn.style.background='linear-gradient(135deg,#10b981,#34d399)';
+      btn.disabled=false;
+    },2000);
+  });
 }
 
 function loadBudget(){
-  var saved=localStorage.getItem('familyBudget');
-  if(!saved)return;
-  try{
-    var data=JSON.parse(saved);
-    if(el('dad-income'))el('dad-income').value=data.dadIncome||0;
-    if(el('other-income'))el('other-income').value=data.otherIncome||0;
-    if(el('exp-rent'))el('exp-rent').value=data.rent||0;
-    if(el('exp-elec'))el('exp-elec').value=data.utilities||0;
-    if(el('exp-ins'))el('exp-ins').value=data.insurance||0;
-    if(el('exp-phone'))el('exp-phone').value=data.phone||0;
-    if(el('exp-mom'))el('exp-mom').value=data.momAllowance||0;
-    if(el('exp-misc'))el('exp-misc').value=data.misc||0;
-  }catch(e){console.log('Could not load saved budget');}
+  fetch('/api/load')
+  .then(function(r){return r.json()})
+  .then(function(data){
+    // --- Populate budget inputs ---
+    if(data.budget){
+      var b=data.budget;
+      if(el('dad-income'))   el('dad-income').value   = b.dad_income    || 0;
+      if(el('other-income')) el('other-income').value = b.other_income  || 0;
+      if(el('exp-rent'))     el('exp-rent').value     = b.rent          || 0;
+      if(el('exp-elec'))     el('exp-elec').value     = b.utilities     || 0;
+      if(el('exp-ins'))      el('exp-ins').value      = b.insurance     || 0;
+      if(el('exp-phone'))    el('exp-phone').value    = b.phone         || 0;
+      if(el('exp-mom'))      el('exp-mom').value      = b.mom_allowance || 0;
+      if(el('exp-misc'))     el('exp-misc').value     = b.misc          || 0;
+    }
+    // --- Restore debts ---
+    debts=[];
+    if(data.debts && data.debts.length>0){
+      data.debts.forEach(function(d){
+        var id='debt-'+(debtCount++);
+        debts.push({
+          id:      id,
+          type:    d.type    || 'credit',
+          name:    d.name    || '',
+          balance: d.balance || 0,
+          min:     d.min     || 0,
+          paidOff: d.paid_off || false
+        });
+      });
+    }else{
+      // First-ever load: create default empty debts
+      debts.push({id:'debt-'+(debtCount++),type:'credit', name:'',balance:0,min:0,paidOff:false});
+      debts.push({id:'debt-'+(debtCount++),type:'medical',name:'',balance:0,min:0,paidOff:false});
+      debts.push({id:'debt-'+(debtCount++),type:'car',    name:'',balance:0,min:0,paidOff:false});
+    }
+    // Trigger full re-render
+    applyLang();
+    recalc();
+  })
+  .catch(function(e){
+    console.log('Could not load from server, using defaults:', e);
+    // Fallback: render empty defaults
+    applyLang();
+    recalc();
+  });
 }
 
 // Wire events
@@ -697,9 +759,6 @@ document.querySelectorAll('.tab-btn').forEach(function(btn){
   var inp=el(id);if(inp)inp.addEventListener('input',recalc);
 });
 
-// Add default debts
-addDebt('credit');addDebt('medical');addDebt('car');
-
-// Init
-loadBudget();applyLang();recalc();
+// Init — loadBudget() handles defaults and calls applyLang()+recalc() after fetch completes
+loadBudget();
 })();
