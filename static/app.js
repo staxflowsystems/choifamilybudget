@@ -443,17 +443,17 @@ function getLeftover(){
 function addDebt(preset){
   var tx=t();var id='debt-'+(debtCount++);
   var debt={id:id,type:preset||'credit',name:'',balance:0,rate:0,min:0,paidOff:false};
-  debts.push(debt);renderDebtForms();updateDebtSummary(getLeftover());
+  debts.push(debt);renderDebtForms();updateDebtSummary(getLeftover());autoSave();
 }
 
 function removeDebt(id){
   debts=debts.filter(function(d){return d.id!==id});
-  renderDebtForms();renderSnowball();updateDebtSummary(getLeftover());
+  renderDebtForms();renderSnowball();updateDebtSummary(getLeftover());autoSave();
 }
 
 function markPaidOff(id){
   debts.forEach(function(d){if(d.id===id)d.paidOff=!d.paidOff});
-  renderDebtForms();updateDebtSummary(getLeftover());renderSnowball();
+  renderDebtForms();updateDebtSummary(getLeftover());renderSnowball();autoSave();
 }
 
 function readDebts(){
@@ -484,7 +484,7 @@ function renderDebtForms(){
       });
     });
     ['db-','dm-','dn-','dt-'].forEach(function(pfx){
-      var inp=el(pfx+d.id);if(inp){inp.addEventListener('input',function(){readDebts();updateDebtSummary(getLeftover());renderSnowball()})}
+      var inp=el(pfx+d.id);if(inp){inp.addEventListener('input',function(){readDebts();updateDebtSummary(getLeftover());renderSnowball();autoSave()})}
     });
     var sel=el('dt-'+d.id);if(sel){sel.value=d.type;sel.addEventListener('change',function(){d.type=sel.value})}
   });
@@ -641,61 +641,46 @@ function renderAcceleratePayoff(){
   targetEl.innerHTML='<div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:12px"><div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px">🎯 '+smallest.name+'</div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">Balance:</span> <span style="color:var(--text);font-weight:700">'+fmt(smallest.balance)+'</span></div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">Minimum Payment:</span> <span style="color:var(--red);font-weight:700">'+fmt(smallest.min)+'/mo</span></div><hr class="divider"><div style="display:flex;gap:12px;justify-content:space-around;font-size:12px"><div style="text-align:center"><div style="color:var(--muted)">Without Extra</div><div style="color:var(--text);font-weight:700;font-size:14px">'+minOnly+' '+tx.months+'</div></div><div style="text-align:center"><div style="color:var(--green)">With $'+Math.round(extra)+'/mo Extra</div><div style="color:var(--green);font-weight:700;font-size:14px">'+withExtra+' '+tx.months+'</div></div></div><div style="text-align:center;margin-top:8px;font-size:11px;color:var(--green);font-weight:700">'+saved+' '+tx.monthsSaved+'</div></div>';
 }
 
-function saveBudget(){
-  readDebts();
-  var budgetData={
-    dad_income:   parseFloat(el('dad-income').value)||0,
-    other_income: parseFloat(el('other-income').value)||0,
-    rent:         parseFloat(el('exp-rent').value)||0,
-    utilities:    parseFloat(el('exp-elec').value)||0,
-    insurance:    parseFloat(el('exp-ins').value)||0,
-    phone:        parseFloat(el('exp-phone').value)||0,
-    mom_allowance:parseFloat(el('exp-mom').value)||0,
-    misc:         parseFloat(el('exp-misc').value)||0
-  };
-  var debtsData=debts.map(function(d,i){
-    return {
-      sort_order: i,
-      type:       d.type,
-      name:       d.name,
-      balance:    d.balance,
-      min:        d.min,
-      paid_off:   d.paidOff
+var autoSaveTimeout=null;
+function autoSave(){
+  clearTimeout(autoSaveTimeout);
+  autoSaveTimeout=setTimeout(function(){
+    readDebts();
+    var budgetData={
+      dad_income:   parseFloat(el('dad-income').value)||0,
+      other_income: parseFloat(el('other-income').value)||0,
+      rent:         parseFloat(el('exp-rent').value)||0,
+      utilities:    parseFloat(el('exp-elec').value)||0,
+      insurance:    parseFloat(el('exp-ins').value)||0,
+      phone:        parseFloat(el('exp-phone').value)||0,
+      mom_allowance:parseFloat(el('exp-mom').value)||0,
+      misc:         parseFloat(el('exp-misc').value)||0
     };
-  });
-  var btn=el('save-budget-btn');
-  btn.textContent='Saving...';
-  btn.disabled=true;
-  fetch('/api/save',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({budget:budgetData,debts:debtsData})
-  })
-  .then(function(r){return r.json()})
-  .then(function(data){
-    if(data.status==='ok'){
-      btn.textContent='✓ Saved!';
-      btn.style.background='linear-gradient(135deg,#6ee7b7,#a7f3d0)';
-      recalc();
-    }else{
-      btn.textContent='✗ Error saving';
-      btn.style.background='linear-gradient(135deg,#f87171,#fca5a5)';
-    }
-    setTimeout(function(){
-      btn.textContent='✓ Save Budget';
-      btn.style.background='linear-gradient(135deg,#10b981,#34d399)';
-      btn.disabled=false;
-    },2000);
-  })
-  .catch(function(){
-    btn.textContent='✗ Network error';
-    btn.style.background='linear-gradient(135deg,#f87171,#fca5a5)';
-    setTimeout(function(){
-      btn.textContent='✓ Save Budget';
-      btn.style.background='linear-gradient(135deg,#10b981,#34d399)';
-      btn.disabled=false;
-    },2000);
-  });
+    var debtsData=debts.map(function(d,i){
+      return {
+        sort_order: i,
+        type:       d.type,
+        name:       d.name,
+        balance:    d.balance,
+        min:        d.min,
+        paid_off:   d.paidOff
+      };
+    });
+    fetch('/api/save',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({budget:budgetData,debts:debtsData})
+    })
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(data.status==='ok'){
+        recalc();
+      }
+    })
+    .catch(function(e){
+      console.log('Auto-save error:',e);
+    });
+  },1000);
 }
 
 function loadBudget(){
@@ -748,16 +733,15 @@ function loadBudget(){
 
 // Wire events
 el('lang-btn').addEventListener('click',function(){lang=lang==='en'?'ko':'en';applyLang();recalc()});
-el('save-budget-btn').addEventListener('click',saveBudget);
 el('add-debt-btn').addEventListener('click',function(){addDebt()});
 el('savings-calc-btn').addEventListener('click',calcSavings);
 el('invest-calc-btn').addEventListener('click',calcInvest);
-el('accelerate-extra').addEventListener('input',function(){renderAcceleratePayoff();renderPlanDebts()});
+el('accelerate-extra').addEventListener('input',function(){renderAcceleratePayoff();renderPlanDebts();autoSave()});
 document.querySelectorAll('.tab-btn').forEach(function(btn){
   btn.addEventListener('click',function(){switchTab(parseInt(btn.getAttribute('data-tab')))});
 });
 ['dad-income','other-income','exp-rent','exp-elec','exp-mom','exp-ins','exp-phone','exp-misc'].forEach(function(id){
-  var inp=el(id);if(inp)inp.addEventListener('input',recalc);
+  var inp=el(id);if(inp){inp.addEventListener('input',function(){recalc();autoSave()});}
 });
 
 // Init — loadBudget() handles defaults and calls applyLang()+recalc() after fetch completes
