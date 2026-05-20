@@ -32,6 +32,7 @@ en:{
   planTitle:"Your Realistic Financial Plan",planDesc:"Based on your income, expenses, and debts - here's your monthly breakdown and path to debt freedom.",
   planIncomeLabel:"Monthly Income",planTotalIncome:"Total Income",
   planEssentialsLabel:"Monthly Essentials",planEssentialExp:"Essential Expenses",planAvailable:"Money Available",planDebtPayments:"Min Monthly Debt Payments",planLeftover:"Money Left for Extra Payoff",
+  accelerateTitle:"⚡ Accelerate Your Payoff",availableForExtra:"Money Available for Extra Payoff",extraPayment:"Extra Monthly Payment ($)",remainingAfter:"Remaining After Extra Payment",accelerateNote:"Enter how much extra you'll put toward debt each month. This amount will attack your smallest debt first, then roll to the next once paid off.",payoffIn:"Payoff in",saves:"saves",noUnpaidDebts:"All debts paid off! Great job!",
   planDebtListTitle:"Your Debts (Smallest to Largest)",planDebtListDesc:"Pay minimum on all debts, then attack the smallest one with extra money. When paid off, roll that payment to the next.",
   planPaidReminder:"Mark each debt as \"Paid Off\" in the Debts tab when you finish paying it. This will update your payoff schedule.",
   planVooLabel:"After Debt: Monthly VOO Investment",planAmountInvest:"Amount to Invest",planVooNote:"Once debts are paid, invest this monthly into VOO for your retirement.",
@@ -103,6 +104,7 @@ ko:{
   planTitle:"당신의 현실적인 재정 계획",planDesc:"수입, 지출, 부채를 바탕으로 한 월간 분석과 부채 상환 경로입니다.",
   planIncomeLabel:"월 수입",planTotalIncome:"총 수입",
   planEssentialsLabel:"월 필수 지출",planEssentialExp:"필수 지출",planAvailable:"이용 가능한 돈",planDebtPayments:"월간 최소 부채 납부액",planLeftover:"추가 상환에 사용 가능한 돈",
+  accelerateTitle:"⚡ 상환 가속화",availableForExtra:"추가 상환에 사용 가능한 돈",extraPayment:"추가 월 상환액 ($)",remainingAfter:"추가 상환 후 남은 금액",accelerateNote:"매달 부채에 추가로 낼 금액을 입력하세요. 이 금액은 가장 작은 부채부터 공략한 후, 상환되면 다음 부채로 넘어갑니다.",payoffIn:"상환 예정",saves:"개월 단축",noUnpaidDebts:"모든 부채가 상환되었습니다. 축하합니다!",
   planDebtListTitle:"당신의 부채 (작은 것부터 큰 것순)",planDebtListDesc:"모든 부채에 최소 납부액을 내고, 가장 작은 부채에 여유 자금을 집중하세요. 갚으면 다음 부채로 롤오버하세요.",
   planPaidReminder:"부채 탭에서 각 부채를 \"상환 완료\"로 표시하면 상환 계획이 업데이트됩니다.",
   planVooLabel:"부채 상환 후: 월간 VOO 투자",planAmountInvest:"투자 금액",planVooNote:"부채를 모두 갚은 후, 이 금액을 매달 VOO에 투자하여 은퇴 준비를 하세요.",
@@ -249,8 +251,14 @@ function applyLang(){
   if(el('lbl-plan-voo-label'))el('lbl-plan-voo-label').textContent='📈 '+tx.planVooLabel;
   set('lbl-plan-amount-invest',tx.planAmountInvest);
   set('lbl-plan-voo-note',tx.planVooNote);
+  set('lbl-accelerate-title',tx.accelerateTitle);
+  set('lbl-available-for-extra',tx.availableForExtra);
+  set('lbl-extra-payment',tx.extraPayment);
+  set('lbl-remaining-after',tx.remainingAfter);
+  set('lbl-accelerate-note',tx.accelerateNote);
   document.querySelectorAll('.extra-name').forEach(function(i){i.placeholder=tx.expName});
   document.querySelectorAll('.debt-rm').forEach(function(b){b.textContent=tx.remove});
+  renderAcceleratePayoff();
   // Update Baby Steps text
   tx.savingsSteps.forEach(function(s, i){
     var num = i + 1;
@@ -308,6 +316,7 @@ function updatePlanSummary(){
   if(el('plan-total-payment'))el('plan-total-payment').textContent=fmt(recommendedPayment);
   if(el('summary-debt'))el('summary-debt').textContent=fmt(totalDebt);
   renderPlanDebts(income);
+  renderAcceleratePayoff();
 
   // Update Summary tab - Income
   if(el('summary-dad'))el('summary-dad').textContent=fmt(dad);
@@ -407,16 +416,9 @@ function renderPlanDebts(income){
     container.innerHTML='<div style="font-size:12px;color:var(--green);padding:10px;font-weight:700">🎉 All debts paid off! Go to the Debt Free Plan tab to start your next chapter.</div>';
   }else{
     sortedDebts.forEach(function(d,idx){
-      // Snowball method: all extra goes to first unpaid debt
-      var extraThisMonth=0;
-      if(idx===0){extraThisMonth=extraForDebt;}
-      var totalPayment=d.min+extraThisMonth;
-
       var div=document.createElement('div');
       div.style.cssText='background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;margin-bottom:10px';
-      var extraLabel=idx===0?'Extra (Put all 50% here first):':'Extra:';
-      var extraStyle=idx===0?' style="padding:6px;background:rgba(74,222,128,.1);border-radius:6px"':'';
-      div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-weight:700;font-size:13px">'+d.name+'</div><div style="font-size:11px;color:var(--muted)">Balance: '+fmt(d.balance)+'</div></div></div><hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px"><span>Minimum:</span><span style="color:var(--red)">'+fmt(d.min)+'</span></div><div'+extraStyle+' style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span>'+extraLabel+'</span><span style="color:var(--green);font-weight:700">'+fmt(extraThisMonth)+'</span></div>';
+      div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-weight:700;font-size:13px">'+d.name+'</div><div style="font-size:11px;color:var(--muted)">Balance: '+fmt(d.balance)+'</div></div></div><hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span>Minimum Monthly Payment:</span><span style="color:var(--red);font-weight:700">'+fmt(d.min)+'</span></div>';
       container.appendChild(div);
     });
   }
@@ -599,6 +601,47 @@ function switchTab(idx){
   document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===idx)});
 }
 
+function renderAcceleratePayoff(){
+  var tx=t();
+  var availableEl=el('accelerate-available');
+  var extraEl=el('accelerate-extra');
+  var remainingEl=el('accelerate-remaining');
+  var targetEl=el('accelerate-target');
+
+  if(!availableEl||!extraEl||!remainingEl||!targetEl)return;
+
+  // Get money available
+  var income=(parseFloat(el('dad-income').value)||0)+(parseFloat(el('other-income').value)||0);
+  var essentials=(parseFloat(el('exp-rent').value)||0)+(parseFloat(el('exp-elec').value)||0)+(parseFloat(el('exp-mom').value)||0)+(parseFloat(el('exp-ins').value)||0)+(parseFloat(el('exp-phone').value)||0)+(parseFloat(el('exp-misc').value)||0);
+
+  // Get total min debt payments
+  readDebts();
+  var totalMin=0;
+  debts.forEach(function(d){if(!d.paidOff)totalMin+=d.min});
+
+  var available=Math.max(0,income-essentials-totalMin);
+  var extra=parseFloat(extraEl.value)||0;
+  var remaining=Math.max(0,available-extra);
+
+  // Display amounts
+  availableEl.textContent=fmt(available);
+  remainingEl.textContent=fmt(remaining);
+
+  // Find smallest unpaid debt
+  var unp=debts.filter(function(d){return !d.paidOff&&d.balance>0}).sort(function(a,b){return (a.balance||0)-(b.balance||0)});
+  if(unp.length===0){
+    targetEl.innerHTML='<div style="padding:12px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;text-align:center;font-size:12px;color:var(--green);font-weight:700">'+tx.noUnpaidDebts+'</div>';
+    return;
+  }
+
+  var smallest=unp[0];
+  var minOnly=smallest.balance>0?Math.ceil(smallest.balance/smallest.min):0;
+  var withExtra=smallest.balance>0?Math.ceil(smallest.balance/(smallest.min+extra)):0;
+  var saved=Math.max(0,minOnly-withExtra);
+
+  targetEl.innerHTML='<div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:12px"><div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px">🎯 '+smallest.name+'</div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">Balance:</span> <span style="color:var(--text);font-weight:700">'+fmt(smallest.balance)+'</span></div><div style="font-size:12px;margin:6px 0"><span style="color:var(--muted)">Minimum Payment:</span> <span style="color:var(--red);font-weight:700">'+fmt(smallest.min)+'/mo</span></div><hr class="divider"><div style="display:flex;gap:12px;justify-content:space-around;font-size:12px"><div style="text-align:center"><div style="color:var(--muted)">Without Extra</div><div style="color:var(--text);font-weight:700;font-size:14px">'+minOnly+' '+tx.months+'</div></div><div style="text-align:center"><div style="color:var(--green)">With $'+Math.round(extra)+'/mo Extra</div><div style="color:var(--green);font-weight:700;font-size:14px">'+withExtra+' '+tx.months+'</div></div></div><div style="text-align:center;margin-top:8px;font-size:11px;color:var(--green);font-weight:700">'+saved+' '+tx.saves+'</div></div>';
+}
+
 function saveBudget(){
   var budgetData={
     dadIncome:parseFloat(el('dad-income').value)||0,
@@ -643,6 +686,7 @@ el('save-budget-btn').addEventListener('click',saveBudget);
 el('add-debt-btn').addEventListener('click',function(){addDebt()});
 el('savings-calc-btn').addEventListener('click',calcSavings);
 el('invest-calc-btn').addEventListener('click',calcInvest);
+el('accelerate-extra').addEventListener('input',function(){renderAcceleratePayoff();renderPlanDebts()});
 document.querySelectorAll('.tab-btn').forEach(function(btn){
   btn.addEventListener('click',function(){switchTab(parseInt(btn.getAttribute('data-tab')))});
 });
