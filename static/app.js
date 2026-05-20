@@ -676,6 +676,7 @@ function saveBudget(){
     if(data.status==='ok'){
       btn.textContent='✓ Saved!';
       btn.style.background='linear-gradient(135deg,#6ee7b7,#a7f3d0)';
+      recalc();
     }else{
       btn.textContent='✗ Error saving';
       btn.style.background='linear-gradient(135deg,#f87171,#fca5a5)';
