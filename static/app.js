@@ -523,6 +523,7 @@ function renderSnowball(){
   var container=el('snowball-container');
   var sumDiv=el('snowball-summary');
   var tipDiv=el('snowball-tip');
+  if(!container||!sumDiv||!tipDiv)return;
   if(validDebts.length===0){
     container.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px" id="snowball-empty">'+tx.snowballEmpty+'</p>';
     sumDiv.style.display='none';tipDiv.style.display='none';return;
@@ -615,13 +616,13 @@ function switchTab(idx){
 }
 
 function renderAcceleratePayoff(){
-  var tx=t();
   var availableEl=el('accelerate-available');
   var extraEl=el('accelerate-extra');
   var remainingEl=el('accelerate-remaining');
   var targetEl=el('accelerate-target');
 
   if(!availableEl||!extraEl||!remainingEl||!targetEl)return;
+  var tx=t();
 
   // Get money available
   var income=(parseFloat(el('dad-income').value)||0)+(parseFloat(el('other-income').value)||0);
@@ -741,9 +742,11 @@ function loadBudget(){
       debts.push({id:'debt-'+(debtCount++),type:'medical',name:'',balance:0,min:0,paidOff:false});
       debts.push({id:'debt-'+(debtCount++),type:'car',    name:'',balance:0,min:0,paidOff:false});
     }
-    // Trigger full re-render
-    applyLang();
-    recalc();
+    // Trigger full re-render - use setTimeout to ensure DOM is updated before recalc reads values
+    setTimeout(function(){
+      applyLang();
+      recalc();
+    }, 10);
   })
   .catch(function(e){
     console.log('Could not load from server, using defaults:', e);
