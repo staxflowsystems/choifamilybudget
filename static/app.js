@@ -366,6 +366,7 @@ function renderSummaryDebts(){
   if(!container)return;
   container.innerHTML='';
   readDebts();
+  var tx=t();
 
   if(debts.length===0){
     container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:10px">'+tx.noDebtsAdded+'</div>';
@@ -402,6 +403,7 @@ function renderPlanDebts(income){
   if(!container)return;
 
   readDebts();
+  var tx=t();
   var extraAvailable=getLeftover();
   var totalMin=0;debts.forEach(function(d){totalMin+=d.min});
   var extraForDebt=Math.max(0,extraAvailable-totalMin);
@@ -439,7 +441,6 @@ function renderPlanDebts(income){
     sortedDebts.forEach(function(d,idx){
       var div=document.createElement('div');
       div.style.cssText='background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;margin-bottom:10px';
-      var tx=t();
       div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-weight:700;font-size:13px">'+d.name+'</div><div style="font-size:11px;color:var(--muted)">'+tx.balance+': '+fmt(d.balance)+'</div></div></div><hr class="divider"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span>'+tx.minimumPayment+':</span><span style="color:var(--red);font-weight:700">'+fmt(d.min)+'</span></div>';
       container.appendChild(div);
     });
