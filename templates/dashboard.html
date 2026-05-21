@@ -289,7 +289,8 @@
   </div>
 
   <div class="card">
-    <div class="section-label blue">🧮 <span id="lbl-voo-calc">VOO Investment Calculator</span></div>
+    <div class="section-label blue">🧮 <span id="lbl-roth-calc-title">Roth IRA Calculator</span></div>
+    <div style="font-size:11px;color:var(--gold);margin-bottom:10px;font-weight:700" id="lbl-roth-calc-max-tip">Max monthly contribution: $625 ($7,500/year ÷ 12)</div>
     <label class="field-label" id="lbl-invest-monthly">Monthly Investment ($)</label>
     <input type="number" id="invest-monthly" value="200">
     <label class="field-label" id="lbl-invest-years">Years to Invest</label>
@@ -319,26 +320,25 @@
     </div>
   </div>
 
-  <div id="invest-options-container">
-    <div style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:14px;padding:16px;margin-bottom:12px">
-      <div style="font-size:24px;margin-bottom:8px">📊</div>
-      <div style="font-weight:700;font-size:14px;margin-bottom:6px" id="invest-opt-1-title">VOO (Recommended #1)</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.65" id="invest-opt-1-body">Vanguard S&P 500 ETF. Buy through any brokerage. Low 0.03% fee. Tracks 500 top US companies. Best for long-term 10+ year investing. Simply buy monthly and don't sell when market drops.</div>
+  <div class="card">
+    <div class="section-label purple" id="lbl-roth-ira-title">🎯 How to Open a Roth IRA</div>
+    <div style="font-size:11px;color:var(--gold);margin-bottom:12px;font-weight:700" id="lbl-roth-ira-limit">2025 Contribution Limit: $7,500/year</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px">
+      <div style="margin-bottom:8px" id="lbl-roth-ira-step1">1. Choose a Broker — Open an account at Fidelity, Vanguard, or Charles Schwab</div>
+      <div style="margin-bottom:8px" id="lbl-roth-ira-step2">2. Create & Verify — Complete identity verification (takes ~5 minutes online)</div>
+      <div style="margin-bottom:8px" id="lbl-roth-ira-step3">3. Fund Your Account — Link a bank account and deposit monthly (automatic recommended)</div>
+      <div style="margin-bottom:8px" id="lbl-roth-ira-step4">4. Buy Your Investments — Invest 80% VOO + 20% QQQ for balanced long-term growth</div>
+      <div id="lbl-roth-ira-step5">5. Set & Forget — Don't time the market. Invest monthly, ignore short-term drops</div>
     </div>
-    <div style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);border-radius:14px;padding:16px;margin-bottom:12px">
-      <div style="font-size:24px;margin-bottom:8px">🏦</div>
-      <div style="font-weight:700;font-size:14px;margin-bottom:6px" id="invest-opt-2-title">High-Yield Savings Account</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.65" id="invest-opt-2-body">For your emergency fund and short-term savings. Online banks like Ally or Marcus offer 4-5% interest — much better than regular bank savings. Safe, no risk, FDIC insured.</div>
-    </div>
-    <div style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:14px;padding:16px;margin-bottom:12px">
-      <div style="font-size:24px;margin-bottom:8px">📋</div>
-      <div style="font-weight:700;font-size:14px;margin-bottom:6px" id="invest-opt-3-title">IRA (Individual Retirement Account)</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.65" id="invest-opt-3-body">A tax-advantaged retirement account. You can put up to $7,000/year in a Roth IRA (2024 limit). Money grows tax-free and you don't pay tax when you withdraw in retirement. Open at Fidelity, Vanguard, or Charles Schwab.</div>
-    </div>
-    <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);border-radius:14px;padding:16px;margin-bottom:12px">
-      <div style="font-size:24px;margin-bottom:8px">⚠️</div>
-      <div style="font-weight:700;font-size:14px;margin-bottom:6px" id="invest-opt-4-title">What to AVOID</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.65" id="invest-opt-4-body">Don't put retirement money in: individual stocks you pick yourself, crypto (too risky for retirement), savings accounts at big banks (0.01% interest), or anything someone is pushing hard to sell you.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label green" id="lbl-roth-ira-benefits">✅ Key IRA Benefits</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:8px" id="lbl-roth-ira-benefit1">✅ Tax-Free Growth — Your money grows without paying taxes on gains</div>
+      <div style="margin-bottom:8px" id="lbl-roth-ira-benefit2">✅ No Reporting Required — You don't report annual gains unless you sell</div>
+      <div style="margin-bottom:8px" id="lbl-roth-ira-benefit3">✅ Tax-Free Withdrawal — In retirement, you withdraw money completely tax-free</div>
+      <div id="lbl-roth-ira-benefit4">✅ Contribution Flexibility — You can withdraw contributions anytime (not the growth)</div>
     </div>
   </div>
 </div>

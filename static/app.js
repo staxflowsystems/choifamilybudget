@@ -59,9 +59,23 @@ en:{
   dfpIncomeLabel:"Monthly Income",dfpExpensesLabel:"Monthly Expenses",dfpTotalIncome:"Total Income",dfpTotalEssentials:"Total Essentials",
   dfpDebtStatus:"✅ Debt Status",dfpNoDebt:"NO DEBT 🎉",
   dfpAllocationTitle:"Monthly Allocation (After Essentials)",dfpAllocationDesc:"Based on Dave Ramsey's Baby Steps, here's how to allocate your leftover money:",
-  dfpLeftover:"Total Available",dfpInvestPct:"15% → Investing (Step 4)",dfpInvestNote:"VOO, retirement accounts, building long-term wealth",
+  dfpLeftover:"Total Available",dfpInvestPct:"15% → Investing (Step 4)",dfpInvestNote:"Roth IRA: Max $625/month ($7,500/year). Check the Invest tab to learn more!",
   dfpSavingsPct:"Remaining → Savings & Goals",dfpSavingsNote:"Emergency fund maintenance, college fund, home payoff, quality of life",
-  investTitle:"Investing for the Future",vooTitle:"VOO — Vanguard S&P 500 ETF",
+  investTitle:"Investing for the Future",
+  rothCalcTitle:"Roth IRA Calculator",rothCalcMaxTip:"Max monthly contribution: $625 ($7,500/year ÷ 12)",
+  rothIRATitle:"How to Open a Roth IRA",
+  rothIRALimit:"2025 Contribution Limit: $7,500/year",
+  rothIRAStep1:"1. Choose a Broker — Open an account at Fidelity, Vanguard, or Charles Schwab",
+  rothIRAStep2:"2. Create & Verify — Complete identity verification (takes ~5 minutes online)",
+  rothIRAStep3:"3. Fund Your Account — Link a bank account and deposit monthly (automatic recommended)",
+  rothIRAStep4:"4. Buy Your Investments — Invest 80% VOO + 20% QQQ for balanced long-term growth",
+  rothIRAStep5:"5. Set & Forget — Don't time the market. Invest monthly, ignore short-term drops",
+  rothIRABenefits:"Key IRA Benefits",
+  rothIRABenefit1:"✅ Tax-Free Growth — Your money grows without paying taxes on gains",
+  rothIRABenefit2:"✅ No Reporting Required — You don't report annual gains unless you sell",
+  rothIRABenefit3:"✅ Tax-Free Withdrawal — In retirement, you withdraw money completely tax-free",
+  rothIRABenefit4:"✅ Contribution Flexibility — You can withdraw contributions anytime (not the growth)",
+  vooTitle:"VOO — Vanguard S&P 500 ETF",
   vooDesc:"VOO tracks the 500 largest US companies (Apple, Microsoft, Google, Amazon...). When America's economy grows, VOO grows. It's the most recommended ETF by financial experts for everyday investors.",
   yearlyReturns:"Yearly Returns",tenYrAvg:"10-Year Avg Annual Return",expenseRatio:"Expense Ratio (Annual Fee)",
   tenKexample:"$10,000 invested 10 years ago =",vooCalc:"VOO Investment Calculator",
@@ -79,7 +93,7 @@ en:{
     {icon:"🚨",title:"Baby Step 1: $1,000 Emergency Fund",body:"Before attacking debt, save $1,000 in a separate savings account. This is your safety net for small surprises — flat tire, small medical bill. Don't touch it except for real emergencies.",highlight:"Goal: Save $1,000 first. No exceptions."},
     {icon:"💳",title:"Baby Step 2: Pay Off All Debt (Snowball)",body:"Use the Snowball tab to pay off every debt from smallest to largest. Put every extra dollar toward debt while paying minimums on everything else.",highlight:"This is where you are now. Focus here!"},
     {icon:"🛡️",title:"Baby Step 3: Full Emergency Fund (3-6 Months)",body:"Once debt-free, build your emergency fund to cover 3-6 months of living expenses. If monthly expenses are $4,500, your goal is $13,500-$27,000 saved.",highlight:"This protects you if Dad loses income or has a health issue."},
-    {icon:"📈",title:"Baby Step 4: Invest 15% of Income",body:"Put 15% of your monthly income into retirement investments. With $4,500/month income, that's $675/month. Use VOO in a brokerage account, or a 401k/IRA if available.",highlight:"$675/month in VOO for 15 years could grow to $250,000+"},
+    {icon:"📈",title:"Baby Step 4: Invest 15% of Income",body:"Put 15% of your monthly income into retirement investments. With $4,500/month income, that's $625/month in a Roth IRA (2025 limit: $7,500/year). Use 80% VOO + 20% QQQ for balanced growth.",highlight:"$625/month in a Roth IRA for 15 years could grow to $180,000+"},
     {icon:"🏠",title:"Baby Step 5+: Build Wealth",body:"Keep investing, pay off your home if you have one, and build wealth. At this stage you have no debt, an emergency fund, and growing investments. You are financially free.",highlight:"This is the goal. Freedom from financial stress."}
   ],
   investOptions:[
@@ -143,9 +157,23 @@ ko:{
   dfpIncomeLabel:"월 수입",dfpExpensesLabel:"월 지출",dfpTotalIncome:"총 수입",dfpTotalEssentials:"총 필수 지출",
   dfpDebtStatus:"✅ 부채 상태",dfpNoDebt:"부채 없음 🎉",
   dfpAllocationTitle:"월간 자금 배분 (필수 지출 후)",dfpAllocationDesc:"데이브 램지의 베이비 스텝에 따라, 남은 돈을 다음과 같이 배분하세요:",
-  dfpLeftover:"이용 가능한 총액",dfpInvestPct:"15% → 투자 (4단계)",dfpInvestNote:"VOO, 은퇴 계좌, 장기 부를 만들기",
+  dfpLeftover:"이용 가능한 총액",dfpInvestPct:"15% → 투자 (4단계)",dfpInvestNote:"로스 IRA: 월 최대 $625 (연 $7,500). 투자 탭에서 더 알아보세요!",
   dfpSavingsPct:"나머지 → 저축 및 목표",dfpSavingsNote:"비상금 유지, 대학 자금, 주택 담보 대출 상환, 삶의 질 향상",
-  investTitle:"미래를 위한 투자",vooTitle:"VOO — 뱅가드 S&P 500 ETF",
+  investTitle:"미래를 위한 투자",
+  rothCalcTitle:"로스 IRA 계산기",rothCalcMaxTip:"월 최대 기여금: $625 (연 $7,500 ÷ 12)",
+  rothIRATitle:"로스 IRA 계좌 개설하기",
+  rothIRALimit:"2025년 기여 한도: 연 $7,500",
+  rothIRAStep1:"1. 브로커 선택 — Fidelity, Vanguard, Charles Schwab 중 선택 후 계좌 개설",
+  rothIRAStep2:"2. 계좌 생성 및 인증 — 신원 확인 (온라인으로 약 5분)",
+  rothIRAStep3:"3. 자금 입금 — 은행 계좌 연결 후 매달 입금 (자동 이체 권장)",
+  rothIRAStep4:"4. 투자 시작 — 80% VOO + 20% QQQ로 균형 잡힌 장기 성장 추구",
+  rothIRAStep5:"5. 장기 투자 — 시장 타이밍을 하지 말고 매달 꾸준히 투자하세요",
+  rothIRABenefits:"로스 IRA의 주요 이점",
+  rothIRABenefit1:"✅ 세금 없는 성장 — 수익에 대해 세금을 내지 않습니다",
+  rothIRABenefit2:"✅ 보고 불필요 — 매년 수익을 보고할 필요가 없습니다 (판매 시 제외)",
+  rothIRABenefit3:"✅ 세금 없는 인출 — 은퇴 후 완전히 세금 없이 인출할 수 있습니다",
+  rothIRABenefit4:"✅ 유연한 기여 — 언제든지 기여금을 인출할 수 있습니다 (수익 제외)",
+  vooTitle:"VOO — 뱅가드 S&P 500 ETF",
   vooDesc:"VOO는 미국 500대 기업(애플, 마이크로소프트, 구글, 아마존 등)을 추종합니다. 미국 경제가 성장하면 VOO도 성장합니다. 재정 전문가들이 일반 투자자에게 가장 많이 추천하는 ETF입니다.",
   yearlyReturns:"연간 수익률",tenYrAvg:"10년 평균 연간 수익률",expenseRatio:"연간 수수료",
   tenKexample:"10년 전 $10,000 투자 시 현재 가치",vooCalc:"VOO 투자 계산기",
@@ -163,7 +191,7 @@ ko:{
     {icon:"🚨",title:"1단계: 비상금 $1,000 모으기",body:"부채를 갚기 전에 먼저 별도 통장에 $1,000을 모으세요. 이것은 작은 긴급 상황(타이어 펑크, 작은 병원비 등)에 대비한 안전망입니다. 진짜 긴급 상황이 아니면 절대 사용하지 마세요.",highlight:"목표: 먼저 $1,000 저축. 예외 없음."},
     {icon:"💳",title:"2단계: 모든 부채 상환 (스노우볼)",body:"스노우볼 탭을 활용해 가장 작은 것부터 모든 부채를 갚으세요. 나머지 부채에 최소 납부액을 내면서 여유 자금을 전부 가장 작은 부채에 집중하세요.",highlight:"지금 여기가 집중해야 할 단계입니다!"},
     {icon:"🛡️",title:"3단계: 완전한 비상금 (3-6개월치 생활비)",body:"부채를 다 갚은 후 3-6개월치 생활비를 비상금으로 모으세요. 월 지출이 $4,500이라면 $13,500~$27,000을 목표로 하세요.",highlight:"아버지가 일을 못 하게 되거나 건강 문제가 생겼을 때를 대비합니다."},
-    {icon:"📈",title:"4단계: 수입의 15% 투자",body:"월 수입의 15%를 은퇴 투자에 넣으세요. 월 $4,500 수입이라면 $675입니다. 증권 계좌에서 VOO를 구매하거나, 401k 또는 IRA를 활용하세요.",highlight:"매달 $675를 VOO에 15년 투자하면 $250,000 이상으로 성장할 수 있습니다"},
+    {icon:"📈",title:"4단계: 수입의 15% 투자",body:"월 수입의 15%를 은퇴 투자에 넣으세요. 월 $4,500 수입이라면 $625입니다 (로스 IRA 연 한도: $7,500/2025년). 80% VOO + 20% QQQ로 균형 잡힌 성장을 노리세요.",highlight:"로스 IRA에 매달 $625를 15년 투자하면 약 $180,000으로 성장할 수 있습니다"},
     {icon:"🏠",title:"5단계 이후: 재산 쌓기",body:"계속 투자하고, 집이 있다면 주택 담보 대출을 갚고, 재산을 불려 나가세요. 이 단계에 이르면 부채가 없고, 비상금이 있고, 투자가 성장하고 있습니다. 재정적으로 자유롭습니다.",highlight:"이것이 목표입니다. 재정적 스트레스로부터의 자유."}
   ],
   investOptions:[
@@ -243,12 +271,26 @@ function applyLang(){
   set('lbl-dfp-invest-note',tx.dfpInvestNote);
   set('lbl-dfp-savings-pct',tx.dfpSavingsPct);
   set('lbl-dfp-savings-note',tx.dfpSavingsNote);
+  set('lbl-roth-calc-title',tx.rothCalcTitle);
+  set('lbl-roth-calc-max-tip',tx.rothCalcMaxTip);
   set('lbl-savings-calc',tx.savingsCalc);
   set('lbl-monthly-save',tx.monthlySave);
   set('lbl-save-years',tx.saveYears);
   set('lbl-total-saved',tx.totalSaved);
   set('lbl-with-interest',tx.withInterest);
   set('invest-title',tx.investTitle);
+  set('lbl-roth-ira-title',tx.rothIRATitle);
+  set('lbl-roth-ira-limit',tx.rothIRALimit);
+  set('lbl-roth-ira-step1',tx.rothIRAStep1);
+  set('lbl-roth-ira-step2',tx.rothIRAStep2);
+  set('lbl-roth-ira-step3',tx.rothIRAStep3);
+  set('lbl-roth-ira-step4',tx.rothIRAStep4);
+  set('lbl-roth-ira-step5',tx.rothIRAStep5);
+  set('lbl-roth-ira-benefits',tx.rothIRABenefits);
+  set('lbl-roth-ira-benefit1',tx.rothIRABenefit1);
+  set('lbl-roth-ira-benefit2',tx.rothIRABenefit2);
+  set('lbl-roth-ira-benefit3',tx.rothIRABenefit3);
+  set('lbl-roth-ira-benefit4',tx.rothIRABenefit4);
   set('lbl-voo-title',tx.vooTitle);
   set('voo-desc',tx.vooDesc);
   set('lbl-voo-calc',tx.vooCalc);
@@ -593,7 +635,7 @@ function updateDebtFreePlan(){
   var misc=parseFloat(el('exp-misc').value)||0;
   var essentials=rent+elec+mom+ins+phone+misc;
   var leftover=income-essentials;
-  var investAmount=income*0.15;
+  var investAmount=Math.min(income*0.15, 625); // Cap at $625/month (Roth IRA limit)
   var remainingSavings=leftover-investAmount;
   remainingSavings=Math.max(0,remainingSavings);
   if(el('dfp-income'))el('dfp-income').textContent=fmt(income);
